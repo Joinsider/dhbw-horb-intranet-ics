@@ -54,4 +54,10 @@ Die `*_FILE`-Varianten lesen den Wert aus einer Datei, z. B. einem Docker Secret
 uv run pytest
 ```
 
+Bei Pull Requests auf `main`/`master` laufen die Tests automatisch. Ein Tag `vX.Y.Z` veröffentlicht das Image als `ghcr.io/<owner>/<repo>` mit den Tags `X.Y.Z`, `X.Y` und `latest`:
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
 Entscheidungen stehen in [docs/adr](docs/adr).
