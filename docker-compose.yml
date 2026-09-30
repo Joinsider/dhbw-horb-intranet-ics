@@ -1,0 +1,10 @@
+services:
+  dhbw-intranet-ics:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      # Database with all fetched lectures; must be writable for UID 1000.
+      - ./data:/data
