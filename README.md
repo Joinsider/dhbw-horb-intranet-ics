@@ -37,8 +37,33 @@ http://<host>:8000/calendar.ics?api_key=<API_KEY>
 | `MIN_FETCH_INTERVAL_SECONDS` | `300` | Mindestpause zwischen zwei Intranet-Abrufen |
 | `REQUEST_DELAY_SECONDS` | `2` | Pause zwischen einzelnen Requests |
 | `DB_PATH` | `/data/schedule.db` | SQLite-Datei (Volume `/data`) |
+| `FILTERS_FILE` | `/data/filters.toml` | Filterregeln, optional |
 
 Die `*_FILE`-Varianten lesen den Wert aus einer Datei, z. B. einem Docker Secret.
+
+## Filter
+
+Termine lassen sich über eine TOML-Datei ausblenden, z. B. Fächer, die man nicht belegt:
+
+```bash
+cp filters.example.toml data/filters.toml
+```
+
+```toml
+[[exclude]]
+title = ["Funktionale Programm", "Übung_ F. Progamm"]
+kind = "lecture"   # Klausuren bleiben sichtbar
+
+[[exclude]]
+title_contains = "Funknetze"
+```
+
+- Jeder `[[exclude]]`-Block ist eine Regel; ein Termin fällt raus, sobald eine Regel passt. Innerhalb einer Regel müssen alle Felder passen, bei Listen reicht ein Wert.
+- Felder: `title` (exakt), `title_contains`, `title_regex`, `person`, `room`, `kind` (`lecture`, `exam`, `oral_exam`, `other`). Groß-/Kleinschreibung spielt keine Rolle.
+- Klausuren haben denselben Titel wie die Vorlesung. Ohne `kind = "lecture"` verschwinden sie mit.
+- Änderungen an der Datei gelten ab dem nächsten Abruf, ohne Neustart. Ist die Datei beim Start fehlerhaft, startet der Container nicht; wird sie im Betrieb fehlerhaft, bleiben die letzten gültigen Regeln aktiv (Fehler im Log).
+- `http://<host>:8000/titles?api_key=<API_KEY>` listet alle gespeicherten Titel mit Art, Anzahl und wie viele davon gefiltert werden.
+- Gefiltert wird nur bei der Auslieferung, die Datenbank bleibt vollständig. Der Header `X-Filtered-Events` nennt die Zahl der ausgeblendeten Termine.
 
 ## Verhalten
 

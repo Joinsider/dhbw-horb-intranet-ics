@@ -50,6 +50,7 @@ class Settings:
     kurs: str = "HOR-TINF2024"
     weeks_ahead: int = 4
     db_path: str = "/data/schedule.db"
+    filters_file: str = ""
     cache_ttl: int = 3600
     min_fetch_interval: int = 300
     request_delay: float = 2.0
@@ -65,6 +66,7 @@ class Settings:
             kurs=normalize_kurs(os.environ.get("KURS") or "HOR-TINF2024"),
             weeks_ahead=_int("WEEKS_AHEAD", 4),
             db_path=os.environ.get("DB_PATH") or "/data/schedule.db",
+            filters_file=os.environ.get("FILTERS_FILE") or "/data/filters.toml",
             cache_ttl=_int("CACHE_TTL_SECONDS", 3600),
             min_fetch_interval=_int("MIN_FETCH_INTERVAL_SECONDS", 300),
             request_delay=float(_int("REQUEST_DELAY_SECONDS", 2)),

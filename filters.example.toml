@@ -1,0 +1,26 @@
+# Termine, die nicht im Kalender erscheinen sollen.
+# Kopieren nach data/filters.toml; Änderungen gelten ohne Neustart.
+#
+# Jeder [[exclude]]-Block ist eine Regel. Ein Termin fällt raus, sobald eine
+# Regel passt. Innerhalb einer Regel müssen alle angegebenen Felder passen,
+# bei Listen reicht ein Wert.
+#
+#   title           exakter Titel (Groß-/Kleinschreibung und Leerzeichen egal)
+#   title_contains  Teil des Titels
+#   title_regex     regulärer Ausdruck auf den Titel (ohne Groß-/Kleinschreibung)
+#   person          Teil des Dozentennamens
+#   room            Teil des Raums
+#   kind            lecture, exam, oral_exam oder other
+#
+# Achtung: Klausuren tragen denselben Titel wie die Vorlesung. Ohne `kind`
+# verschwindet auch die Klausur. Die genauen Titel liefert
+#   http://<host>:8000/titles?api_key=<API_KEY>
+
+# Funktionale Programmierung inkl. Übung, Klausuren bleiben sichtbar
+[[exclude]]
+title = ["Funktionale Programm", "Übung_ F. Progamm"]
+kind = "lecture"
+
+# Weitere Fächer einfach als eigene Regel oder in der Liste oben ergänzen:
+# [[exclude]]
+# title_contains = "Funknetze"
